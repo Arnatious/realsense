@@ -169,7 +169,7 @@ namespace realsense_camera
     // call base class method first
     BaseNodelet::allocateResources();
     // set IR2 image buffer
-    image_[(uint32_t) RS_STREAM_INFRARED2] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC1, cv::Scalar (0));
+    image_[(uint32_t) RS_STREAM_INFRARED2] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC3, cv::Scalar (0, 0, 0));
   }
 
   /*
@@ -191,8 +191,8 @@ namespace realsense_camera
     // Call base class method first
     BaseNodelet::fillStreamEncoding();
     // Setup IR2 stream
-    stream_encoding_[(uint32_t) RS_STREAM_INFRARED2] = sensor_msgs::image_encodings::TYPE_8UC1;
-    stream_step_[(uint32_t) RS_STREAM_INFRARED2] = width_[RS_STREAM_DEPTH] * sizeof (unsigned char);
+    stream_encoding_[(uint32_t) RS_STREAM_INFRARED2] = stream_encoding_[(uint32_t) RS_STREAM_INFRARED];
+    stream_step_[(uint32_t) RS_STREAM_INFRARED2] = stream_step_[(uint32_t) RS_STREAM_INFRARED];
   }
 
   /*
@@ -256,4 +256,3 @@ namespace realsense_camera
     }
   }
 }  // end namespace
-

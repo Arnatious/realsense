@@ -105,6 +105,7 @@ namespace realsense_camera
     const uint16_t *image_depth16_;
 
     cv::Mat image_[STREAM_COUNT];
+    cv::Mat ir_img_[2];
 
     image_transport::CameraPublisher camera_publisher_[STREAM_COUNT];
     sensor_msgs::CameraInfoPtr camera_info_ptr_[STREAM_COUNT];

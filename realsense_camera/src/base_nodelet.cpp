@@ -78,11 +78,11 @@ namespace realsense_camera
 
     setStreamOptions();
 
-    if (enable_depth_ == false && enable_color_ == false)
+    /*if (enable_depth_ == false && enable_color_ == false)
     {
       ROS_ERROR_STREAM(nodelet_name_ << " - None of the streams are enabled. Exiting!");
       ros::shutdown();
-    }
+    }*/
 
     // Advertise the various topics and services.
     image_transport::ImageTransport it (nh_);
@@ -242,8 +242,8 @@ namespace realsense_camera
     if (enable_depth_ == true)
     {
       enableStream(RS_STREAM_DEPTH, width_[RS_STREAM_DEPTH], height_[RS_STREAM_DEPTH], DEPTH_FORMAT, fps_[RS_STREAM_DEPTH]);
-      enableStream(RS_STREAM_INFRARED, width_[RS_STREAM_DEPTH], height_[RS_STREAM_DEPTH], IR_FORMAT, fps_[RS_STREAM_DEPTH]);
     }
+    enableStream(RS_STREAM_INFRARED, width_[RS_STREAM_DEPTH], height_[RS_STREAM_DEPTH], IR_FORMAT, fps_[RS_STREAM_DEPTH]);
     getCameraOptions();
     setStaticCameraOptions();
 
@@ -312,7 +312,9 @@ namespace realsense_camera
 
     image_[RS_STREAM_COLOR] = cv::Mat(height_[RS_STREAM_COLOR], width_[RS_STREAM_COLOR], CV_8UC3, cv::Scalar (0, 0, 0));
     image_[RS_STREAM_DEPTH] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_16UC1, cv::Scalar (0));
-    image_[RS_STREAM_INFRARED] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC1, cv::Scalar (0));
+    image_[RS_STREAM_INFRARED] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC3, cv::Scalar (0, 0, 0));
+    ir_img_[0] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC1, cv::Scalar (0));
+    ir_img_[1] = cv::Mat(height_[RS_STREAM_DEPTH], width_[RS_STREAM_DEPTH], CV_8UC1, cv::Scalar (0));
   }
 
   /*
@@ -436,7 +438,18 @@ namespace realsense_camera
       image_depth16_ = reinterpret_cast <const uint16_t * >(rs_get_frame_data(rs_device_, RS_STREAM_DEPTH, 0));
     }
     // fill image buffer for stream
-    image_[(uint32_t) rs_strm].data = (unsigned char *) (rs_get_frame_data(rs_device_, rs_strm, 0));
+    if (rs_strm == RS_STREAM_INFRARED || rs_strm == RS_STREAM_INFRARED2)
+    {
+      // ROS_WARN("Reached IR %d", rs_strm);
+      cv::Mat temp3C = cv::Mat(height_[RS_STREAM_COLOR], width_[RS_STREAM_COLOR], CV_8UC3, cv::Scalar (0, 0, 0));
+      ir_img_[(uint32_t) rs_strm - RS_STREAM_INFRARED].data = (unsigned char *) (rs_get_frame_data(rs_device_, rs_strm, 0));
+      cvtColor(ir_img_[(uint32_t) (rs_strm == RS_STREAM_INFRARED ? 0 : 1)], image_[(uint32_t) rs_strm], CV_GRAY2RGB);
+      // ROS_WARN("Succeeded IR %d", rs_strm);
+    }
+    else
+    {
+      image_[(uint32_t) rs_strm].data = (unsigned char *) (rs_get_frame_data(rs_device_, rs_strm, 0));
+    }
   }
 
   /*
@@ -448,8 +461,8 @@ namespace realsense_camera
     stream_step_[RS_STREAM_COLOR] = width_[RS_STREAM_COLOR] * sizeof (unsigned char) * 3;
     stream_encoding_[RS_STREAM_DEPTH] = sensor_msgs::image_encodings::TYPE_16UC1;
     stream_step_[RS_STREAM_DEPTH] = width_[RS_STREAM_DEPTH] * sizeof (uint16_t);
-    stream_encoding_[RS_STREAM_INFRARED] = sensor_msgs::image_encodings::TYPE_8UC1;
-    stream_step_[RS_STREAM_INFRARED] = width_[RS_STREAM_DEPTH] * sizeof (unsigned char);
+    stream_encoding_[RS_STREAM_INFRARED] = "rgb8";
+    stream_step_[RS_STREAM_INFRARED] = width_[RS_STREAM_DEPTH] * sizeof (unsigned char) * 3;
   }
 
   /*
