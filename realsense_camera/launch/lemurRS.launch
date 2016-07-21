@@ -1,0 +1,71 @@
+<!-- Entry point for using realsense_camera -->
+<launch>
+  <arg name="manager"       value="nodelet_manager" />
+  <arg name="camera"        default="camera" />
+  <arg name="camera_type"   default="R200" /> <!-- Type of camera -->
+  <arg name="serial_no"     default="" />
+  <arg name="usb_port_id"   default="" /> <!-- USB "Bus#-Port#" -->
+  <arg name="process_depth" default="false"/>
+
+  <arg name="depth"        default="depth" />
+  <arg name="rgb"          default="color" />
+  <arg name="ir"           default="ir" />
+  <arg name="ir2"          default="ir2" />
+  <arg name="depth_fps"         default="30" />
+  <arg name="depth_width"       default="480" />
+  <arg name="depth_height"      default="320" />
+
+  <arg name="enable_color" default="false" />
+
+
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" output="screen"/>
+
+  <node pkg="nodelet" type="nodelet" name="$(arg camera)"
+    args="load realsense_camera/$(arg camera_type)Nodelet $(arg manager)" required="true">
+    <param name="serial_no"               type="str"  value="$(arg serial_no)" />
+    <param name="usb_port_id"             type="str"  value="$(arg usb_port_id)" />
+    <param name="base_frame_id"           type="str"  value="$(arg camera)_link" />
+    <param name="depth_frame_id"          type="str"  value="$(arg camera)_depth_frame" />
+    <param name="color_frame_id"          type="str"  value="$(arg camera)_rgb_frame" />
+    <param name="depth_optical_frame_id"  type="str"  value="$(arg camera)_depth_optical_frame" />
+    <param name="color_optical_frame_id"  type="str"  value="$(arg camera)_rgb_optical_frame" />
+    <param name="ir_frame_id"             type="str"  value="$(arg camera)_ir_frame" />
+    <param name="ir2_frame_id"            type="str"  value="$(arg camera)_ir2_frame" />
+    <param name="$(arg camera)/depth_fps" type="int"  value="$(arg depth_fps)" />
+    <param name="mode"                    type="str"  value="manual"/>
+    <param name="$(arg camera)/enable_depth"      type="bool" value="true" />
+
+    <param name="$(arg camera)/depth_width"       type="int"  value="$(arg depth_width)" />
+    <param name="$(arg camera)/depth_height"      type="int"  value="$(arg depth_height)" />
+
+    <param name="r200_depth_control_estimate_median_decrement"                  type="int" value="5"/>
+    <param name="r200_depth_control_estimate_median_increment"                  type="int" value="5"/>
+    <param name="r200_depth_control_median_threshold"                           type="int" value="115"/>
+    <param name="r200_depth_control_score_minimum_threshold"                    type="int" value="1"/>
+    <param name="r200_depth_control_score_maximum_threshold"                    type="int" value="512"/>
+    <param name="r200_depth_control_texture_count_threshold"                    type="int" value="6"/>
+    <param name="r200_depth_control_texture_difference_threshold"               type="int" value="18"/>
+    <param name="r200_depth_control_second_peak_threshold"                      type="int" value="25"/>
+    <param name="r200_depth_control_neighbor_threshold"                         type="int" value="3"/>
+    <param name="r200_depth_control_lr_threshold"                               type="int" value="24"/>
+
+    <remap from="camera/depth/image_raw"    to="$(arg camera)/$(arg depth)/image_raw" />
+    <remap from="camera/color/image_raw"    to="$(arg camera)/$(arg rgb)/image_raw" />
+    <remap from="camera/ir/image_raw"       to="$(arg camera)/$(arg ir)/image_raw" />
+    <remap from="camera/ir2/image_raw"      to="$(arg camera)/$(arg ir2)/image_raw" />
+    <remap from="camera/depth/points"       to="$(arg camera)/$(arg depth)/points" />
+    <remap from="camera/depth/camera_info"  to="$(arg camera)/$(arg depth)/camera_info" />
+    <remap from="camera/color/camera_info"  to="$(arg camera)/$(arg rgb)/camera_info" />
+    <remap from="camera/ir/camera_info"     to="$(arg camera)/$(arg ir)/camera_info" />
+    <remap from="camera/ir2/camera_info"    to="$(arg camera)/$(arg ir2)/camera_info" />
+    <remap from="camera/get_settings"       to="$(arg camera)/get_settings" />
+
+
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="transfer" args="load depth_image_proc/point_cloud_xyz $(arg manager)" if="$(arg process_depth)">
+      <remap from="camera_info"  to="$(arg camera)/$(arg depth)/camera_info" />
+      <remap from="image_rect"   to="$(arg camera)/$(arg depth)/image_raw" />
+  </node>
+
+</launch>

@@ -34,40 +34,40 @@
 
 namespace realsense_camera
 {
-    // Default Constants.
-    const int STREAM_COUNT = 4;
-    const int DEPTH_HEIGHT = 360;
-    const int DEPTH_WIDTH = 480;
-    const int COLOR_HEIGHT = 480;
-    const int COLOR_WIDTH = 640;
-    const int DEPTH_FPS = 60;
-    const int COLOR_FPS = 60;
-    const bool ENABLE_DEPTH = true;
-    const bool ENABLE_COLOR = true;
-    const bool ENABLE_PC = false;
-    const bool ENABLE_TF = true;
-    const rs_format DEPTH_FORMAT = RS_FORMAT_Z16;
-    const rs_format COLOR_FORMAT = RS_FORMAT_RGB8;
-    const rs_format IR_FORMAT = RS_FORMAT_Y8;
-    const std::string DEFAULT_MODE = "preset";
-    const std::string DEFAULT_BASE_FRAME_ID = "camera_link";
-    const std::string DEFAULT_DEPTH_FRAME_ID = "camera_depth_frame";
-    const std::string DEFAULT_COLOR_FRAME_ID = "camera_rgb_frame";
-    const std::string DEFAULT_DEPTH_OPTICAL_FRAME_ID = "camera_depth_optical_frame";
-    const std::string DEFAULT_COLOR_OPTICAL_FRAME_ID = "camera_rgb_optical_frame";
-    const std::string DEFAULT_IR_FRAME_ID = "camera_ir_frame";
-    const std::string DEFAULT_IR2_FRAME_ID = "camera_ir2_frame";
-    const std::string DEPTH_TOPIC = "camera/depth/image_raw";
-    const std::string COLOR_TOPIC = "camera/color/image_raw";
-    const std::string IR_TOPIC = "camera/ir/image_raw";
-    const std::string IR2_TOPIC = "camera/ir2/image_raw";
-    const std::string PC_TOPIC = "camera/depth/points";
-    const std::string SETTINGS_SERVICE = "camera/get_settings";
-    const std::string STREAM_DESC[STREAM_COUNT] = {"Depth", "Color", "IR", "IR2"};
-    const double ROTATION_IDENTITY[] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+// Default Constants.
+const int STREAM_COUNT = 4;
+const int DEPTH_HEIGHT = 360;
+const int DEPTH_WIDTH = 480;
+const int COLOR_HEIGHT = 480;
+const int COLOR_WIDTH = 640;
+const int DEPTH_FPS = 60;
+const int COLOR_FPS = 60;
+const bool ENABLE_DEPTH = true;
+const bool ENABLE_COLOR = true;
+const bool ENABLE_PC = false;
+const bool ENABLE_TF = true;
+const rs_format DEPTH_FORMAT = RS_FORMAT_Z16;
+const rs_format COLOR_FORMAT = RS_FORMAT_RGB8;
+const rs_format IR_FORMAT = RS_FORMAT_Y8;
+const std::string DEFAULT_MODE = "preset";
+const std::string DEFAULT_BASE_FRAME_ID = "camera_link";
+const std::string DEFAULT_DEPTH_FRAME_ID = "camera_depth_frame";
+const std::string DEFAULT_COLOR_FRAME_ID = "camera_rgb_frame";
+const std::string DEFAULT_DEPTH_OPTICAL_FRAME_ID = "camera_depth_optical_frame";
+const std::string DEFAULT_COLOR_OPTICAL_FRAME_ID = "camera_rgb_optical_frame";
+const std::string DEFAULT_IR_FRAME_ID = "camera_ir_frame";
+const std::string DEFAULT_IR2_FRAME_ID = "camera_ir2_frame";
+const std::string DEPTH_TOPIC = "camera/depth/image_raw";
+const std::string COLOR_TOPIC = "camera/color/image_raw";
+const std::string IR_TOPIC = "camera/ir/image_raw";
+const std::string IR2_TOPIC = "camera/ir2/image_raw";
+const std::string PC_TOPIC = "camera/depth/points";
+const std::string SETTINGS_SERVICE = "camera/get_settings";
+const std::string STREAM_DESC[STREAM_COUNT] = { "Depth", "Color", "IR", "IR2" };
+const double ROTATION_IDENTITY[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 
-    // R200 Constants.
-    const int R200_STREAM_COUNT = 4;
-    const int R200_MAX_Z = 10;      // in meters
+// R200 Constants.
+const int R200_STREAM_COUNT = 4;
+const int R200_MAX_Z = 10;  // in meters
 }
 #endif

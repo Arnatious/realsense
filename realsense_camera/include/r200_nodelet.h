@@ -39,33 +39,27 @@
 
 namespace realsense_camera
 {
-  class R200Nodelet: public realsense_camera::BaseNodelet
-  {
-  public:
+class R200Nodelet : public realsense_camera::BaseNodelet
+{
+public:
+  // Initialize camera
+  void onInit();
 
-    // Initialize camera
-    void onInit();
+protected:
+  // Member Variables.
+  rs_option edge_options_[4] = { RS_OPTION_R200_AUTO_EXPOSURE_LEFT_EDGE, RS_OPTION_R200_AUTO_EXPOSURE_TOP_EDGE,
+                                 RS_OPTION_R200_AUTO_EXPOSURE_RIGHT_EDGE, RS_OPTION_R200_AUTO_EXPOSURE_BOTTOM_EDGE };
+  boost::shared_ptr<dynamic_reconfigure::Server<realsense_camera::r200_paramsConfig>> dynamic_reconf_server_;
 
-  protected:
-
-    // Member Variables.
-    rs_option edge_options_[4] = {
-      RS_OPTION_R200_AUTO_EXPOSURE_LEFT_EDGE,
-      RS_OPTION_R200_AUTO_EXPOSURE_TOP_EDGE,
-      RS_OPTION_R200_AUTO_EXPOSURE_RIGHT_EDGE,
-      RS_OPTION_R200_AUTO_EXPOSURE_BOTTOM_EDGE
-    };
-    boost::shared_ptr<dynamic_reconfigure::Server<realsense_camera::r200_paramsConfig>> dynamic_reconf_server_;
-
-    // Member Functions.
-    void enableStream(rs_stream stream_index, int width, int height, rs_format format, int fps);
-    void disableStream(rs_stream stream_index);
-    void setStreamOptions();
-    void fillStreamEncoding();
-    void allocateResources();
-    void setStaticCameraOptions();
-    void configCallback(realsense_camera::r200_paramsConfig &config, uint32_t level);
-  };
+  // Member Functions.
+  void enableStream(rs_stream stream_index, int width, int height, rs_format format, int fps);
+  void disableStream(rs_stream stream_index);
+  void setStreamOptions();
+  void fillStreamEncoding();
+  void allocateResources();
+  void setStaticCameraOptions();
+  void configCallback(realsense_camera::r200_paramsConfig &config, uint32_t level);
+};
 }
 
 #endif

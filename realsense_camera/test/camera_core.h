@@ -56,24 +56,24 @@
 
 using namespace realsense_camera;
 
-//utest commandline args
+// utest commandline args
 int g_color_height_exp = 0;
 int g_color_width_exp = 0;
 int g_depth_height_exp = 0;
 int g_depth_width_exp = 0;
-uint32_t g_depth_step_exp; // Expected depth step.
-uint32_t g_color_step_exp; // Expected color step.
-uint32_t g_infrared1_step_exp; // Expected infrared1 step.
-uint32_t g_infrared2_step_exp; // Expected infrared2 step.
+uint32_t g_depth_step_exp;      // Expected depth step.
+uint32_t g_color_step_exp;      // Expected color step.
+uint32_t g_infrared1_step_exp;  // Expected infrared1 step.
+uint32_t g_infrared2_step_exp;  // Expected infrared2 step.
 
 bool g_enable_color = true;
 bool g_enable_depth = true;
 bool g_enable_pointcloud = true;
 
-std::string g_depth_encoding_exp; // Expected depth encoding.
-std::string g_color_encoding_exp; // Expected color encoding.
-std::string g_infrared1_encoding_exp; // Expected infrared1 encoding.
-std::string g_infrared2_encoding_exp; // Expected infrared2 encoding.
+std::string g_depth_encoding_exp;      // Expected depth encoding.
+std::string g_color_encoding_exp;      // Expected color encoding.
+std::string g_infrared1_encoding_exp;  // Expected infrared1 encoding.
+std::string g_infrared2_encoding_exp;  // Expected infrared2 encoding.
 
 image_transport::CameraSubscriber g_camera_subscriber[STREAM_COUNT];
 ros::Subscriber g_sub_pc;
@@ -81,7 +81,7 @@ ros::Subscriber g_sub_pc;
 ros::ServiceClient g_service_client;
 
 std::map<std::string, std::string> g_config_args;
-int g_max_z = R200_MAX_Z * 1000; // Converting meter to mm.
+int g_max_z = R200_MAX_Z * 1000;  // Converting meter to mm.
 
 bool g_depth_recv = false;
 bool g_color_recv = false;
@@ -95,18 +95,18 @@ float g_infrared1_avg = 0;
 float g_infrared2_avg = 0;
 float g_pc_depth_avg = 0;
 
-int g_height_recv[STREAM_COUNT] = {0};
-int g_width_recv[STREAM_COUNT] = {0};
-uint32_t g_step_recv[STREAM_COUNT] = {0}; // Received stream step.
+int g_height_recv[STREAM_COUNT] = { 0 };
+int g_width_recv[STREAM_COUNT] = { 0 };
+uint32_t g_step_recv[STREAM_COUNT] = { 0 };  // Received stream step.
 
-std::string g_encoding_recv[STREAM_COUNT]; // Expected stream encoding.
+std::string g_encoding_recv[STREAM_COUNT];  // Expected stream encoding.
 
-int g_caminfo_height_recv[STREAM_COUNT] = {0};
-int g_caminfo_width_recv[STREAM_COUNT] = {0};
-float g_color_caminfo_D_recv[5] = {0};
+int g_caminfo_height_recv[STREAM_COUNT] = { 0 };
+int g_caminfo_width_recv[STREAM_COUNT] = { 0 };
+float g_color_caminfo_D_recv[5] = { 0 };
 
-double g_caminfo_rotation_recv[STREAM_COUNT][9] = {0};
-double g_caminfo_projection_recv[STREAM_COUNT][12] = {0};
+double g_caminfo_rotation_recv[STREAM_COUNT][9] = { 0 };
+double g_caminfo_projection_recv[STREAM_COUNT][12] = { 0 };
 
 std::string g_dmodel_recv[STREAM_COUNT];
 std::string g_camera = "R200";
