@@ -7,16 +7,59 @@
   <arg name="usb_port_id"   default="" /> <!-- USB "Bus#-Port#" -->
   <arg name="process_depth" default="false"/>
 
-  <arg name="depth"        default="depth" />
-  <arg name="rgb"          default="color" />
-  <arg name="ir"           default="ir" />
-  <arg name="ir2"          default="ir2" />
+  <arg name="enable_proc"   default="true"/>
+
+  <arg name="enable_depth"      default="false" />
+  <arg name="enable_color"      default="true" />
+  <arg name="enable_pointcloud" default="false" />
+  <arg name="enable_tf"         default="false" />
+  <arg name="mode"              default="manual" />
+  <arg name="depth_width"       default="640" />
+  <arg name="depth_height"      default="480" />
+  <arg name="color_width"       default="1920" />
+  <arg name="color_height"      default="1080" />
   <arg name="depth_fps"         default="30" />
-  <arg name="depth_width"       default="480" />
-  <arg name="depth_height"      default="320" />
+  <arg name="color_fps"         default="30" />
 
-  <arg name="enable_color" default="false" />
+  <arg name="estimate_median_decrement"     default="5"/>
+  <arg name="estimate_median_increment"     default="5"/>
+  <arg name="median_threshold"              default="115"/>
+  <arg name="score_minimum_threshold"       default="1"/>
+  <arg name="score_maximum_threshold"       default="512"/>
+  <arg name="texture_count_threshold"       default="6"/>
+  <arg name="texture_difference_threshold"  default="18"/>
+  <arg name="second_peak_threshold"         default="25"/>
+  <arg name="neighbor_threshold"            default="3"/>
+  <arg name="lr_threshold"                  default="24"/>
 
+  <param name="$(arg camera)/enable_depth"      type="bool" value="$(arg enable_depth)" />
+  <param name="$(arg camera)/enable_color"      type="bool" value="$(arg enable_color)" />
+  <param name="$(arg camera)/enable_pointcloud" type="bool" value="$(arg enable_pointcloud)" />
+  <param name="$(arg camera)/enable_tf"         type="bool" value="$(arg enable_tf)" />
+  <param name="$(arg camera)/mode"              type="str"  value="$(arg mode)" />
+  <param name="$(arg camera)/depth_width"       type="int"  value="$(arg depth_width)" />
+  <param name="$(arg camera)/depth_height"      type="int"  value="$(arg depth_height)" />
+  <param name="$(arg camera)/color_width"       type="int"  value="$(arg color_width)" />
+  <param name="$(arg camera)/color_height"      type="int"  value="$(arg color_height)" />
+  <param name="$(arg camera)/depth_fps"         type="int"  value="$(arg depth_fps)" />
+  <param name="$(arg camera)/color_fps"         type="int"  value="$(arg color_fps)" />
+
+  <param name="r200_depth_control_estimate_median_decrement"     type="int" value="$(arg estimate_median_decrement)" />
+  <param name="r200_depth_control_estimate_median_increment"     type="int" value="$(arg estimate_median_increment)" />
+  <param name="r200_depth_control_median_threshold"              type="int" value="$(arg median_threshold)" />
+  <param name="r200_depth_control_score_minimum_threshold"       type="int" value="$(arg score_minimum_threshold)" />
+  <param name="r200_depth_control_score_maximum_threshold"       type="int" value="$(arg score_maximum_threshold)" />
+  <param name="r200_depth_control_texture_count_threshold"       type="int" value="$(arg texture_count_threshold)" />
+  <param name="r200_depth_control_texture_difference_threshold"  type="int" value="$(arg texture_difference_threshold)" />
+  <param name="r200_depth_control_second_peak_threshold"         type="int" value="$(arg second_peak_threshold)" />
+  <param name="r200_depth_control_neighbor_threshold"            type="int" value="$(arg neighbor_threshold)" />
+  <param name="r200_depth_control_lr_threshold"                  type="int" value="$(arg lr_threshold)" />
+
+  <arg name="depth"  default="depth" />
+  <arg name="rgb"    default="color" />
+  <arg name="ir"     default="ir" />
+  <arg name="ir2"    default="ir2" />
+  <arg name="stereo" default="stereo" />
 
   <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" output="screen"/>
 
@@ -31,23 +74,6 @@
     <param name="color_optical_frame_id"  type="str"  value="$(arg camera)_rgb_optical_frame" />
     <param name="ir_frame_id"             type="str"  value="$(arg camera)_ir_frame" />
     <param name="ir2_frame_id"            type="str"  value="$(arg camera)_ir2_frame" />
-    <param name="$(arg camera)/depth_fps" type="int"  value="$(arg depth_fps)" />
-    <param name="mode"                    type="str"  value="manual"/>
-    <param name="$(arg camera)/enable_depth"      type="bool" value="true" />
-
-    <param name="$(arg camera)/depth_width"       type="int"  value="$(arg depth_width)" />
-    <param name="$(arg camera)/depth_height"      type="int"  value="$(arg depth_height)" />
-
-    <param name="r200_depth_control_estimate_median_decrement"                  type="int" value="5"/>
-    <param name="r200_depth_control_estimate_median_increment"                  type="int" value="5"/>
-    <param name="r200_depth_control_median_threshold"                           type="int" value="115"/>
-    <param name="r200_depth_control_score_minimum_threshold"                    type="int" value="1"/>
-    <param name="r200_depth_control_score_maximum_threshold"                    type="int" value="512"/>
-    <param name="r200_depth_control_texture_count_threshold"                    type="int" value="6"/>
-    <param name="r200_depth_control_texture_difference_threshold"               type="int" value="18"/>
-    <param name="r200_depth_control_second_peak_threshold"                      type="int" value="25"/>
-    <param name="r200_depth_control_neighbor_threshold"                         type="int" value="3"/>
-    <param name="r200_depth_control_lr_threshold"                               type="int" value="24"/>
 
     <remap from="camera/depth/image_raw"    to="$(arg camera)/$(arg depth)/image_raw" />
     <remap from="camera/color/image_raw"    to="$(arg camera)/$(arg rgb)/image_raw" />
@@ -59,13 +85,18 @@
     <remap from="camera/ir/camera_info"     to="$(arg camera)/$(arg ir)/camera_info" />
     <remap from="camera/ir2/camera_info"    to="$(arg camera)/$(arg ir2)/camera_info" />
     <remap from="camera/get_settings"       to="$(arg camera)/get_settings" />
-
-
   </node>
 
   <node pkg="nodelet" type="nodelet" name="transfer" args="load depth_image_proc/point_cloud_xyz $(arg manager)" if="$(arg process_depth)">
       <remap from="camera_info"  to="$(arg camera)/$(arg depth)/camera_info" />
       <remap from="image_rect"   to="$(arg camera)/$(arg depth)/image_raw" />
+  </node>
+  
+  <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" ns="$(arg stereo)" if="$(arg enable_proc)" output="screen">
+      <remap from="left/image_raw"    to="/$(arg camera)/$(arg ir)/image_raw"  />
+      <remap from="right/image_raw"   to="/$(arg camera)/$(arg ir2)/image_raw"  />
+      <remap from="left/camera_info"  to="/$(arg camera)/$(arg ir)/camera_info"  />
+      <remap from="right/camera_info" to="/$(arg camera)/$(arg ir2)/camera_info"  />
   </node>
 
 </launch>

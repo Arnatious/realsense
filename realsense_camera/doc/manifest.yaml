@@ -1,0 +1,33 @@
+actions: []
+authors: Rajvi Jingar <rajvi.jingar@intel.com>, Reagan Lopez <reagan.lopez@intel.com>,
+  Matt Hansen <matthew.k.hansen@intel.com>
+brief: ''
+bugtracker: ''
+depends:
+- dynamic_reconfigure
+- librealsense
+- message_runtime
+- catkin
+- roscpp
+- nodelet
+- camera_info_manager
+- std_msgs
+- image_transport
+- message_generation
+- rostest
+- tf
+- sensor_msgs
+- cv_bridge
+- rgbd_launch
+- pcl_ros
+description: RealSense Camera package allowing access to Intel 3D cameras and advanced
+  modules
+license: BSD 3-clause. See license attached
+maintainers: Rajvi Jingar <rajvi.jingar@intel.com>, Reagan Lopez <reagan.lopez@intel.com>,
+  Mark Horn <mark.d.horn@intel.com>
+msgs: []
+package_type: package
+repo_url: ''
+srvs:
+- cameraConfiguration
+url: http://www.ros.org/wiki/RealSense
