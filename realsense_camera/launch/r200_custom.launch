@@ -5,10 +5,8 @@
   <arg name="camera_type"   default="R200" /> <!-- Type of camera -->
   <arg name="serial_no"     default="" />
   <arg name="usb_port_id"   default="" /> <!-- USB "Bus#-Port#" -->
-  <arg name="process_depth" default="false"/>
 
-  <arg name="enable_proc"   default="true"/>
-
+  <arg name="enable_proc"       default="true"/>
   <arg name="enable_depth"      default="false" />
   <arg name="enable_color"      default="true" />
   <arg name="enable_pointcloud" default="false" />
@@ -87,11 +85,11 @@
     <remap from="camera/get_settings"       to="$(arg camera)/get_settings" />
   </node>
 
-  <node pkg="nodelet" type="nodelet" name="transfer" args="load depth_image_proc/point_cloud_xyz $(arg manager)" if="$(arg process_depth)">
+  <node pkg="nodelet" type="nodelet" name="transfer" args="load depth_image_proc/point_cloud_xyz $(arg manager)" ns="$(arg stereo)" if="$(arg enable_proc)">
       <remap from="camera_info"  to="$(arg camera)/$(arg depth)/camera_info" />
       <remap from="image_rect"   to="$(arg camera)/$(arg depth)/image_raw" />
   </node>
-  
+
   <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" ns="$(arg stereo)" if="$(arg enable_proc)" output="screen">
       <remap from="left/image_raw"    to="/$(arg camera)/$(arg ir)/image_raw"  />
       <remap from="right/image_raw"   to="/$(arg camera)/$(arg ir2)/image_raw"  />

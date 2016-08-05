@@ -40,7 +40,7 @@ Changes</h1>
 </ul>
 <h1><a class="anchor" id="usage"></a>
 Usage</h1>
-<p>rosLaunch with lemurRS.launch. The camera will publish raw image streams to /camera/ir(2)/image_raw and calibration data to /camera/ir(2)/camera_info. The name of the base nodelet and streams can be reconfigured in the launch file or passed as arguments.</p>
+<p>rosLaunch with lemurRS.launch. The camera will publish raw image streams to /camera/ir(2)/image_raw and calibration data to /camera/ir(2)/camera_info. The name of the base nodelet and streams can be reconfigured in the launch file or passed as arguments. </p>
 <h1><a class="anchor" id="args"></a>
 Arguments</h1>
 <h2><a class="anchor" id="lArgs"></a>
@@ -64,11 +64,65 @@ Static Arguments</h2>
 </div><!-- fragment --><p>The remaining parameters are listed in <a href="https://github.com/intel-ros/realsense/tree/indigo-devel/realsense_camera">the Intel-ROS realsense Github repo</a></p>
 <h1><a class="anchor" id="topics"></a>
 Topics</h1>
-<p>Topics are published </p>
+<p>Topics are published in a namespace defined by the <em>camera</em> argument (default: camera) Camera streams are published under a subnamespace defined by the relevant argument (default: color, depth, ir, ir2)</p>
 <h2><a class="anchor" id="pub"></a>
 Published Topics</h2>
-<div class="fragment"><div class="line">$(arg <a class="code" href="rgbd__topics_8h.html#a7605326d695ac721231e1048e8417c25">camera</a>)/$(arg color)/</div>
-</div><!-- fragment --> <h2><a class="anchor" id="sub"></a>
+<div class="fragment"><div class="line">/<a class="code" href="rgbd__topics_8h.html#a7605326d695ac721231e1048e8417c25">camera</a></div>
+<div class="line">  /color (image_transport)</div>
+<div class="line">    /camera_info</div>
+<div class="line">    /image_raw</div>
+<div class="line">    /image_raw/compressed</div>
+<div class="line">    /image_raw/compressed/parameter_descriptions</div>
+<div class="line">    /image_raw/compressed/parameter_updates</div>
+<div class="line">    /image_raw/compressedDepth</div>
+<div class="line">    /image_raw/compressedDepth/parameter_descriptions</div>
+<div class="line">    /image_raw/compressedDepth/parameter_updates</div>
+<div class="line">    /image_raw/theora</div>
+<div class="line">    /image_raw/theora/parameter_descriptions</div>
+<div class="line">    /image_raw/theora/parameter_updates</div>
+<div class="line"></div>
+<div class="line">  /<a class="code" href="rgbd__topics_8h.html#abe6b7b3958e3d0d576bd458e491eb3bb">depth</a> (image_transport)</div>
+<div class="line">    /camera_info</div>
+<div class="line">    /image_raw</div>
+<div class="line">    /image_raw/compressed</div>
+<div class="line">    /image_raw/compressed/parameter_descriptions</div>
+<div class="line">    /image_raw/compressed/parameter_updates</div>
+<div class="line">    /image_raw/compressedDepth</div>
+<div class="line">    /image_raw/compressedDepth/parameter_descriptions</div>
+<div class="line">    /image_raw/compressedDepth/parameter_updates</div>
+<div class="line">    /image_raw/theora</div>
+<div class="line">    /image_raw/theora/parameter_descriptions</div>
+<div class="line">    /image_raw/theora/parameter_updates</div>
+<div class="line">    /points (sensor_msgs/PointCloud2)</div>
+<div class="line"></div>
+<div class="line">  /<a class="code" href="rgbd__topics_8h.html#a12b9608f9127ce2e72972e1b65b9fb7a">ir</a></div>
+<div class="line">    /camera_info</div>
+<div class="line">    /image_raw</div>
+<div class="line">    /image_raw/compressed</div>
+<div class="line">    /image_raw/compressed/parameter_descriptions</div>
+<div class="line">    /image_raw/compressed/parameter_updates</div>
+<div class="line">    /image_raw/compressedDepth</div>
+<div class="line">    /image_raw/compressedDepth/parameter_descriptions</div>
+<div class="line">    /image_raw/compressedDepth/parameter_updates</div>
+<div class="line">    /image_raw/theora</div>
+<div class="line">    /image_raw/theora/parameter_descriptions</div>
+<div class="line">    /image_raw/theora/parameter_updates</div>
+<div class="line"></div>
+<div class="line">  /ir2</div>
+<div class="line">    camera_info</div>
+<div class="line">    image_raw</div>
+<div class="line">    image_raw/compressed</div>
+<div class="line">    image_raw/compressed/parameter_descriptions</div>
+<div class="line">    image_raw/compressed/parameter_updates</div>
+<div class="line">    image_raw/compressedDepth</div>
+<div class="line">    image_raw/compressedDepth/parameter_descriptions</div>
+<div class="line">    image_raw/compressedDepth/parameter_updates</div>
+<div class="line">    image_raw/theora</div>
+<div class="line">    image_raw/theora/parameter_descriptions</div>
+<div class="line">    image_raw/theora/parameter_updates</div>
+</div><!-- fragment --><p> Color images are transmitted using the image_transport interface. The images are represented by an 8 bit, 3 channel static byte array</p>
+<p>/camera/parameter_descriptions /camera/parameter_updates </p>
+<h2><a class="anchor" id="sub"></a>
 Subscribed Topics</h2>
 </div></div><!-- contents -->
 
@@ -76,7 +130,7 @@ Subscribed Topics</h2>
 <hr size="1"><div style="align: right;">
 <a href="http://wiki.ros.org/realsense_camera">realsense_camera</a><br />
 Author(s): Rajvi Jingar <rajvi.jingar@intel.com>, Reagan Lopez <reagan.lopez@intel.com>, Matt Hansen <matthew.k.hansen@intel.com></br />
-<small>autogenerated on Fri Jul 29 2016 16:51:02</small>
+<small>autogenerated on Thu Aug 4 2016 18:01:31</small>
 </div>
 </body>
 </html>
